@@ -1,5 +1,6 @@
 package com.kaamos.todorest
 
+import com.kaamos.todorest.dao.TodoDAO;
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -7,6 +8,7 @@ import org.springframework.boot.runApplication
 class TodoRestApplication
 
 fun main(args: Array<String>) {
-	runApplication<TodoRestApplication>(*args)
+	runApplication<TodoRestApplication>(*args);
+	TodoDAO().initDatabase();
 }
 
