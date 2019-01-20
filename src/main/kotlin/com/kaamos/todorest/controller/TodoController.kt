@@ -5,14 +5,12 @@ import com.kaamos.todorest.dao.TodoDAO;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 class TodoController {
     @PostMapping("/addtodo")
-    fun addTask(@RequestParam task: String, user: String, timestamp: Long, completed: Boolean): String {
-        val newTodo = ToDo(null, task, user, timestamp, completed);
+    fun addTask(@RequestBody newTodo: ToDo): String {
         TodoDAO().addTodo(newTodo);
         return "Todo added!";
     }
