@@ -6,21 +6,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 class TodoController {
-    @PostMapping("/addtask")
+    @PostMapping("/addtodo")
     fun addTask(@RequestParam task: String, user: String, timestamp: Long, completed: Boolean): String {
-        val todo = ToDo(null, task, user, timestamp, completed);
-        TodoDAO().addTask(todo);
-        return "Task added!";
+        val newTodo = ToDo(null, task, user, timestamp, completed);
+        TodoDAO().addTodo(newTodo);
+        return "Todo added!";
     }
 
-    @GetMapping("/gettasks")
-    fun getTasks(): MutableList<ToDo> {
-        println("Hello");
-        var toDos = TodoDAO().getTasks();
-        println(toDos);
+    @PostMapping("/updatetodo")
+    fun updateTodo(@RequestBody updatedTodo: ToDo): String {
+        TodoDAO().updateTodo(updatedTodo);
+        return "Todo $updatedTodo updated!";
+    }
+
+    @GetMapping("/gettodos")
+    fun getTodos(): MutableList<ToDo> {
+        var toDos = TodoDAO().getTodos();
         return toDos;
     }
 }

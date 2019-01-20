@@ -27,13 +27,34 @@ class TodoDAO {
         };
     };
 
-    fun getTasks(): MutableList<toDoObject> {
+    fun updateTodo(updatedTodo: toDoObject) {
+        db;
+        transaction {
+            addLogger(StdOutSqlLogger);
+
+            // We need to create new variables so that the data types will be correct.
+            var updatedTask: String = updatedTodo.task;
+            var updatedUser: String = updatedTodo.user;
+            var updatedTimestamp: Long = updatedTodo.timestamp;
+            var updatedCompleted: Boolean = updatedTodo.completed;
+
+            ToDo.update({ToDo.id eq updatedTodo.id!!}) {
+                with(SqlExpressionBuilder) {
+                    it[ToDo.task] = updatedTask;
+                    it[ToDo.user] = updatedUser;
+                    it[ToDo.timestamp] = updatedTimestamp;
+                    it[ToDo.completed] = updatedCompleted;
+                }
+            };
+        };
+    };
+
+    fun getTodos(): MutableList<toDoObject> {
         var toDos = mutableListOf<toDoObject>()
         db;
         transaction {
             addLogger(StdOutSqlLogger);
             for (todo in ToDo.selectAll()) {
-                println(todo);
                 var id = todo[ToDo.id];
                 var task = todo[ToDo.task];
                 var user = todo[ToDo.user];
@@ -46,15 +67,15 @@ class TodoDAO {
         return toDos;
     };
 
-    fun addTask(todo: toDoObject) {
+    fun addTodo(newTodo: toDoObject) {
         db;
         transaction {
             addLogger(StdOutSqlLogger);
             ToDo.insert {
-                it[task] = todo.task;
-                it[user] = todo.user;
-                it[timestamp] = todo.timestamp;
-                it[completed] = todo.completed;
+                it[task] = newTodo.task;
+                it[user] = newTodo.user;
+                it[timestamp] = newTodo.timestamp;
+                it[completed] = newTodo.completed;
             };
         };
     };
