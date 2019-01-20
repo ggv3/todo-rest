@@ -11,7 +11,7 @@ Every endpoint uses a single ToDo-object with a following structure:
     id: Integer,
     task: String,
     user: String,
-    timestamp: Integer,
+    timestamp: Long,
     completed: Boolean
 }
 ```
