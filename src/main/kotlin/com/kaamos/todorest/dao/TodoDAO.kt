@@ -12,6 +12,7 @@ class TodoDAO {
     var task = varchar("task", 100);
     var user = varchar("user", 20);
     var timestamp = long("timestamp");
+    var completed = bool("completed");
     };
 
     val db by lazy {
@@ -21,19 +22,39 @@ class TodoDAO {
     fun initDatabase() {
         db;
         transaction {
-            addLogger(StdOutSqlLogger)
+            addLogger(StdOutSqlLogger);
             SchemaUtils.create(ToDo); 
         };
+    };
+
+    fun getTasks(): MutableList<toDoObject> {
+        var toDos = mutableListOf<toDoObject>()
+        db;
+        transaction {
+            addLogger(StdOutSqlLogger);
+            for (todo in ToDo.selectAll()) {
+                println(todo);
+                var id = todo[ToDo.id];
+                var task = todo[ToDo.task];
+                var user = todo[ToDo.user];
+                var timestamp = todo[ToDo.timestamp];
+                var completed = todo[ToDo.completed];
+                val todoObject = toDoObject(id, task, user, timestamp, completed);
+                toDos.add(todoObject);
+            };
+        };
+        return toDos;
     };
 
     fun addTask(todo: toDoObject) {
         db;
         transaction {
-            addLogger(StdOutSqlLogger)
+            addLogger(StdOutSqlLogger);
             ToDo.insert {
                 it[task] = todo.task;
                 it[user] = todo.user;
                 it[timestamp] = todo.timestamp;
+                it[completed] = todo.completed;
             };
         };
     };
