@@ -79,4 +79,12 @@ class TodoDAO {
             };
         };
     };
+
+    fun deleteTodo(todoToDelete: toDoObject) {
+        db;
+        transaction {
+            addLogger(StdOutSqlLogger);
+            ToDo.deleteWhere{ToDo.id eq todoToDelete.id!!}
+        };
+    };
 };

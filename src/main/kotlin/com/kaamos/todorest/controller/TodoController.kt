@@ -20,12 +20,18 @@ class TodoController {
     @PostMapping("/updatetodo")
     fun updateTodo(@RequestBody updatedTodo: ToDo): String {
         TodoDAO().updateTodo(updatedTodo);
-        return "Todo $updatedTodo updated!";
+        return "Todo updated!";
     }
 
     @GetMapping("/gettodos")
     fun getTodos(): MutableList<ToDo> {
         var toDos = TodoDAO().getTodos();
         return toDos;
+    }
+
+    @PostMapping("/deletetodo")
+    fun deleteTodo(@RequestBody todoToDelete: ToDo): String {
+        TodoDAO().deleteTodo(todoToDelete);
+        return "Todo deleted!";
     }
 }
